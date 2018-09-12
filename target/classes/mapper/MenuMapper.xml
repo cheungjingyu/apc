@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheung.dao.MenuMapper">
+  <resultMap id="BaseResultMap" type="com.cheung.pojo.Menu">
+    <id column="name" jdbcType="VARCHAR" property="name" />
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="typeid" jdbcType="VARCHAR" property="typeid" />
+    <result column="burden" jdbcType="VARCHAR" property="burden" />
+    <result column="brief" jdbcType="VARCHAR" property="brief" />
+    <result column="price" jdbcType="VARCHAR" property="price" />
+    <result column="sums" jdbcType="VARCHAR" property="sums" />
+    <result column="price1" jdbcType="VARCHAR" property="price1" />
+    <result column="sums1" jdbcType="VARCHAR" property="sums1" />
+    <result column="imgpath" jdbcType="VARCHAR" property="imgpath" />
+  </resultMap>
+  
+    <resultMap id="BaseResultMapAndType" type="com.cheung.pojo.Menu">
+    <id column="name" jdbcType="VARCHAR" property="name" />
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="typeid" jdbcType="VARCHAR" property="typeid" />
+    <result column="burden" jdbcType="VARCHAR" property="burden" />
+    <result column="brief" jdbcType="VARCHAR" property="brief" />
+    <result column="price" jdbcType="VARCHAR" property="price" />
+    <result column="sums" jdbcType="VARCHAR" property="sums" />
+    <result column="price1" jdbcType="VARCHAR" property="price1" />
+    <result column="sums1" jdbcType="VARCHAR" property="sums1" />
+    <result column="imgpath" jdbcType="VARCHAR" property="imgpath" />
+    <association property="type" javaType="com.cheung.pojo.Type">
+        <id property="name" column="name"/>
+        <result property="id" column="id"/>
+    </association>
+  </resultMap>
+
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    name, id, typeid, burden, brief, price, sums, price1, sums1, imgpath
+  </sql>
+   <sql id="Base_Column_ListAndType">
+    m.name, m.id, typeid, burden, brief, price, sums, price1, sums1, imgpath, t.id, t.name
+  </sql>
+  <select id="selectByExample" parameterType="com.cheung.pojo.MenuExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from menus
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from menus
+    where name = #{name,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from menus
+    where name = #{name,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.cheung.pojo.MenuExample">
+    delete from menus
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cheung.pojo.Menu">
+    insert into menus (name, id, typeid, 
+      burden, brief, price, 
+      sums, price1, sums1, 
+      imgpath)
+    values (#{name,jdbcType=VARCHAR}, #{id,jdbcType=INTEGER}, #{typeid,jdbcType=VARCHAR}, 
+      #{burden,jdbcType=VARCHAR}, #{brief,jdbcType=VARCHAR}, #{price,jdbcType=VARCHAR}, 
+      #{sums,jdbcType=VARCHAR}, #{price1,jdbcType=VARCHAR}, #{sums1,jdbcType=VARCHAR}, 
+      #{imgpath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cheung.pojo.Menu">
+    insert into menus
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        name,
+      </if>
+      <if test="id != null">
+        id,
+      </if>
+      <if test="typeid != null">
+        typeid,
+      </if>
+      <if test="burden != null">
+        burden,
+      </if>
+      <if test="brief != null">
+        brief,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="sums != null">
+        sums,
+      </if>
+      <if test="price1 != null">
+        price1,
+      </if>
+      <if test="sums1 != null">
+        sums1,
+      </if>
+      <if test="imgpath != null">
+        imgpath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="typeid != null">
+        #{typeid,jdbcType=VARCHAR},
+      </if>
+      <if test="burden != null">
+        #{burden,jdbcType=VARCHAR},
+      </if>
+      <if test="brief != null">
+        #{brief,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="sums != null">
+        #{sums,jdbcType=VARCHAR},
+      </if>
+      <if test="price1 != null">
+        #{price1,jdbcType=VARCHAR},
+      </if>
+      <if test="sums1 != null">
+        #{sums1,jdbcType=VARCHAR},
+      </if>
+      <if test="imgpath != null">
+        #{imgpath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cheung.pojo.MenuExample" resultType="java.lang.Long">
+    select count(*) from menus
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update menus
+    <set>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.typeid != null">
+        typeid = #{record.typeid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.burden != null">
+        burden = #{record.burden,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brief != null">
+        brief = #{record.brief,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sums != null">
+        sums = #{record.sums,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price1 != null">
+        price1 = #{record.price1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sums1 != null">
+        sums1 = #{record.sums1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imgpath != null">
+        imgpath = #{record.imgpath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update menus
+    set name = #{record.name,jdbcType=VARCHAR},
+      id = #{record.id,jdbcType=INTEGER},
+      typeid = #{record.typeid,jdbcType=VARCHAR},
+      burden = #{record.burden,jdbcType=VARCHAR},
+      brief = #{record.brief,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=VARCHAR},
+      sums = #{record.sums,jdbcType=VARCHAR},
+      price1 = #{record.price1,jdbcType=VARCHAR},
+      sums1 = #{record.sums1,jdbcType=VARCHAR},
+      imgpath = #{record.imgpath,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cheung.pojo.Menu">
+    update menus
+    <set>
+      <if test="id != null">
+        id = #{id,jdbcType=INTEGER},
+      </if>
+      <if test="typeid != null">
+        typeid = #{typeid,jdbcType=VARCHAR},
+      </if>
+      <if test="burden != null">
+        burden = #{burden,jdbcType=VARCHAR},
+      </if>
+      <if test="brief != null">
+        brief = #{brief,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="sums != null">
+        sums = #{sums,jdbcType=VARCHAR},
+      </if>
+      <if test="price1 != null">
+        price1 = #{price1,jdbcType=VARCHAR},
+      </if>
+      <if test="sums1 != null">
+        sums1 = #{sums1,jdbcType=VARCHAR},
+      </if>
+      <if test="imgpath != null">
+        imgpath = #{imgpath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where name = #{name,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cheung.pojo.Menu">
+    update menus
+    set id = #{id,jdbcType=INTEGER},
+      typeid = #{typeid,jdbcType=VARCHAR},
+      burden = #{burden,jdbcType=VARCHAR},
+      brief = #{brief,jdbcType=VARCHAR},
+      price = #{price,jdbcType=VARCHAR},
+      sums = #{sums,jdbcType=VARCHAR},
+      price1 = #{price1,jdbcType=VARCHAR},
+      sums1 = #{sums1,jdbcType=VARCHAR},
+      imgpath = #{imgpath,jdbcType=VARCHAR}
+    where name = #{name,jdbcType=VARCHAR}
+  </update>
+   <select id="selectAndType" parameterType="com.cheung.pojo.MenuExample" resultMap="BaseResultMapAndType">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_ListAndType" />
+    from menus m left join types t on m.typeid = t.id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+    <select id="todayMenu" resultType="com.cheung.pojo.Money" parameterType="String">
+  select m.name name,m.price price,m.price1 price1,sum(o.menusum) num ,u.type type,'0' sum
+from menus m 
+left join orders o on m.id = o.menuid 
+left join users u on o.userid= u.id
+where o.menusum is not null
+and o.delivery = 1
+and o.times like #{now}
+group by m.id ,u.type
+  </select>
+<select id="selectMax" resultType="com.cheung.pojo.Menu">
+select m.id, m.name,sum(menusum) sums from orders o left join menus m on o.menuid = m.id group by menuid order by sum(menusum) desc
+</select>
+</mapper>
